@@ -1,0 +1,72 @@
+<!--
+  The contents of the todo window. `store` is the todo store from src/store.mjs;
+  `close` and `scrollListToEnd` come from src/modal.mjs.
+-->
+<template id="todo-mod-template">
+  <div class="todo-mod">
+    <form class="todo-mod-add" @submit.prevent="store.add() && scrollListToEnd()">
+      <input class="form-control todo-mod-input" type="text" v-model="store.newText" :maxlength="store.maxLength"
+             placeholder="Add a todo" aria-label="New todo" autocomplete="off">
+      <button class="btn btn-primary" type="submit" :disabled="!store.newText.trim()">Add</button>
+    </form>
+
+    <p class="todo-mod-error" v-if="store.error" role="alert">{{ store.error }}</p>
+
+    <ul class="todo-mod-list" v-if="store.todos.length">
+      <li class="todo-mod-item" v-for="todo in store.todos" :key="todo.id" :class="{ 'todo-mod-item--done': todo.done }">
+        <!-- Enter or leaving the field saves, Escape cancels. Escape must not reach the popup, which would close. -->
+        <form class="todo-mod-edit" v-if="store.editingId === todo.id" @submit.prevent="store.commitEdit()">
+          <input class="form-control todo-mod-input" type="text" v-model="store.editText" :maxlength="store.maxLength"
+                 aria-label="Edit todo" autocomplete="off"
+                 @vue:mounted="$el.focus(); $el.select()"
+                 @blur="store.commitEdit()"
+                 @keydown.escape.stop="store.cancelEdit()">
+        </form>
+        <div class="todo-mod-row" v-else>
+          <label class="todo-mod-check">
+            <!-- If the change cannot be saved, put the checkbox back to what the list says. -->
+            <input type="checkbox" :checked="todo.done"
+                   @change="store.toggle(todo.id) || ($event.target.checked = todo.done)">
+            <span class="todo-mod-text">{{ todo.text }}</span>
+          </label>
+          <button class="todo-mod-icon-button" type="button" title="Edit" :aria-label="'Edit: ' + todo.text"
+                  @click="store.startEdit(todo.id)">
+            <svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5"
+                 stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M11 2.5l2.5 2.5L5.5 13 2.5 13.5 3 10.5z"/>
+            </svg>
+          </button>
+          <button class="todo-mod-icon-button" type="button" title="Delete" :aria-label="'Delete: ' + todo.text"
+                  @click="store.remove(todo.id)">
+            <svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5"
+                 stroke-linecap="round" aria-hidden="true">
+              <path d="M3.5 3.5l9 9M12.5 3.5l-9 9"/>
+            </svg>
+          </button>
+        </div>
+      </li>
+    </ul>
+    <p class="todo-mod-empty" v-else>Nothing here yet. Add your first todo above.</p>
+
+    <div class="todo-mod-footer" v-if="store.todos.length">
+      <span class="todo-mod-count">{{ store.openCount() }} open, {{ store.doneCount() }} done</span>
+      <button class="btn btn-sm btn-secondary" type="button" v-if="store.doneCount()" @click="store.removeCompleted()">
+        Remove completed
+      </button>
+    </div>
+
+    <p class="todo-mod-warning" v-if="store.isNearLimit()">
+      Storage is {{ store.usagePercent() }}% full. Remove todos you no longer need.
+    </p>
+
+    <div class="todo-mod-startup" v-if="store.mode === 'startup'">
+      <button class="btn btn-sm btn-secondary" type="button" @click="store.snooze() && close()">
+        Don't show again today
+      </button>
+    </div>
+    <p class="todo-mod-note" v-else-if="store.isSnoozed()">
+      The startup window is switched off for today.
+      <button class="todo-mod-link" type="button" @click="store.unsnooze()">Show it again</button>
+    </p>
+  </div>
+</template>

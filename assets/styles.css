@@ -1,0 +1,188 @@
+/*
+  Todo mod. Colours are taken from the surrounding popup (currentColor, translucent greys), so the
+  window follows the game's light and dark themes without knowing their palettes.
+*/
+
+/* Top bar button. :where() keeps these at zero specificity: they only apply where the game's own
+   button and icon classes do not set the same thing. */
+:where(.todo-mod-header-button) {
+  padding: 0.25rem 0.5rem;
+  border: 1px solid transparent;
+  border-radius: 0.25rem;
+  background-color: rgba(127, 127, 127, 0.16);
+  line-height: 1;
+  cursor: pointer;
+}
+:where(.todo-mod-header-icon) {
+  width: 20px;
+  height: 20px;
+}
+.todo-mod-header-icon {
+  display: block;
+}
+
+/* Popup */
+.swal2-html-container.todo-mod-html {
+  margin-top: 1rem;
+  overflow: visible;
+}
+
+.todo-mod {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  font-size: 1rem;
+  line-height: 1.4;
+  text-align: left;
+}
+.todo-mod p {
+  margin: 0;
+}
+
+/* New todo */
+.todo-mod-add {
+  display: flex;
+  gap: 0.5rem;
+  margin: 0;
+}
+.todo-mod-input {
+  flex: 1 1 auto;
+  min-width: 0;
+  /* The game switches text selection off for the whole page. */
+  -webkit-user-select: text;
+  user-select: text;
+}
+/* In the dark theme the game gives text fields almost the same colour as the popup behind them,
+   so make sure the outline of the field stays visible. */
+.todo-mod input.todo-mod-input:not(:focus) {
+  border: 1px solid rgba(127, 127, 127, 0.5);
+}
+.todo-mod-add .btn {
+  flex: none;
+  white-space: nowrap;
+}
+
+/* List */
+.todo-mod-list {
+  max-height: min(50vh, 26rem);
+  margin: 0;
+  padding: 0;
+  overflow-y: auto;
+  border: 1px solid rgba(127, 127, 127, 0.35);
+  border-radius: 0.25rem;
+  list-style: none;
+}
+.todo-mod-item + .todo-mod-item {
+  border-top: 1px solid rgba(127, 127, 127, 0.22);
+}
+.todo-mod-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.25rem;
+  padding: 0.25rem 0.25rem 0.25rem 0.625rem;
+}
+.todo-mod-row:hover {
+  background-color: rgba(127, 127, 127, 0.1);
+}
+.todo-mod-check {
+  display: flex;
+  flex: 1 1 auto;
+  align-items: flex-start;
+  gap: 0.5rem;
+  min-width: 0;
+  margin: 0;
+  padding: 0.25rem 0;
+  font-weight: inherit;
+  cursor: pointer;
+}
+.todo-mod-check input {
+  flex: none;
+  width: 1rem;
+  height: 1rem;
+  margin: 0.2rem 0 0;
+  cursor: pointer;
+}
+.todo-mod-text {
+  overflow-wrap: anywhere;
+}
+.todo-mod-item--done .todo-mod-text {
+  opacity: 0.55;
+  text-decoration: line-through;
+}
+.todo-mod-edit {
+  margin: 0;
+  padding: 0.25rem;
+}
+
+/* Edit and delete */
+.todo-mod-icon-button {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  padding: 0;
+  border: 0;
+  border-radius: 0.25rem;
+  background: none;
+  color: inherit;
+  opacity: 0.55;
+  cursor: pointer;
+}
+.todo-mod-icon-button:hover,
+.todo-mod-icon-button:focus-visible {
+  background-color: rgba(127, 127, 127, 0.25);
+  opacity: 1;
+}
+
+/* Below the list */
+.todo-mod-footer,
+.todo-mod-startup {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  min-height: 1.75rem;
+}
+.todo-mod-startup {
+  justify-content: flex-end;
+}
+.todo-mod-footer,
+.todo-mod-empty,
+.todo-mod-note {
+  font-size: 0.875rem;
+}
+.todo-mod-count,
+.todo-mod-empty,
+.todo-mod-note {
+  opacity: 0.8;
+}
+.todo-mod-empty {
+  padding: 1rem 0;
+  text-align: center;
+}
+.todo-mod-error,
+.todo-mod-warning {
+  padding: 0.375rem 0.625rem;
+  border-left: 3px solid;
+  border-radius: 0.25rem;
+  font-size: 0.875rem;
+}
+.todo-mod-error {
+  border-color: #e04f4f;
+  background-color: rgba(224, 79, 79, 0.14);
+}
+.todo-mod-warning {
+  border-color: #e0a030;
+  background-color: rgba(224, 160, 48, 0.14);
+}
+.todo-mod-link {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-decoration: underline;
+  cursor: pointer;
+}
