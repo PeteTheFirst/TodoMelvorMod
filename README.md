@@ -2,6 +2,8 @@
 
 A todo list for Melvor Idle. Every character has its own list.
 
+![The todo window in Melvor Idle](Screenshot.png)
+
 - When a character has loaded, the list opens in a window if it still has unchecked todos. It waits
   until "Welcome back" and any other popups of the game have been closed. Switch this off for good
   with **Show on startup** under *Mod Settings → Todo*.
