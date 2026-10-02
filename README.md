@@ -10,6 +10,7 @@ A todo list for Melvor Idle. Every character has its own list.
   remove all completed ones at once.
 - To change the order, drag a todo by the handle (six dots) on its left. With the keyboard: move the
   focus to the handle with Tab, then press arrow up or arrow down. Escape cancels a drag.
+- **OK**, the cross in the corner, Escape and the hotkey all close the window.
 - **Don't show again today** keeps the window from opening on its own until the next day. Open the
   list by hand to undo that.
 

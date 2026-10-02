@@ -188,15 +188,38 @@ button.todo-mod-header-button:focus {
 
 /* Below the list */
 .todo-mod-footer,
-.todo-mod-startup {
+.todo-mod-actions {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 0.5rem;
+}
+.todo-mod-footer {
   min-height: 1.75rem;
 }
-.todo-mod-startup {
-  justify-content: flex-end;
+/* The bottom row: OK on the left, set off from the list by a line. On a narrow screen the two
+   buttons do not fit next to each other; the second one then moves to a line of its own and
+   stays on the right. */
+.todo-mod-actions {
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 0.25rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(127, 127, 127, 0.22);
+}
+.todo-mod-actions .btn {
+  flex: none;
+  white-space: nowrap;
+}
+.todo-mod-actions .btn + .btn {
+  margin-left: auto;
+}
+.todo-mod-ok {
+  min-width: 5.5rem;
+}
+.todo-mod-actions .todo-mod-note {
+  flex: 1 1 0;
+  text-align: right;
 }
 .todo-mod-footer,
 .todo-mod-empty,

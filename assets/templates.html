@@ -69,14 +69,16 @@
       Storage is {{ store.usagePercent() }}% full. Remove todos you no longer need.
     </p>
 
-    <div class="todo-mod-startup" v-if="store.mode === 'startup'">
-      <button class="btn btn-sm btn-secondary" type="button" @click="store.snooze() && close()">
+    <!-- OK closes the window. To its right: what the startup window does for the rest of the day. -->
+    <div class="todo-mod-actions">
+      <button class="btn btn-primary todo-mod-ok" type="button" @click="close()">OK</button>
+      <button class="btn btn-secondary" type="button" v-if="store.mode === 'startup'" @click="store.snooze() && close()">
         Don't show again today
       </button>
+      <p class="todo-mod-note" v-else-if="store.isSnoozed()">
+        The startup window is switched off for today.
+        <button class="todo-mod-link" type="button" @click="store.unsnooze()">Show it again</button>
+      </p>
     </div>
-    <p class="todo-mod-note" v-else-if="store.isSnoozed()">
-      The startup window is switched off for today.
-      <button class="todo-mod-link" type="button" @click="store.unsnooze()">Show it again</button>
-    </p>
   </div>
 </template>
