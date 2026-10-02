@@ -1,6 +1,6 @@
 <!--
-  The contents of the todo window. `store` is the todo store from src/store.mjs;
-  `close` and `scrollListToEnd` come from src/modal.mjs.
+  The contents of the todo window. `store` is the todo store from src/store.mjs; `close` and
+  `scrollListToEnd` come from src/modal.mjs, `startDrag` and `moveWithKeys` from src/sort.mjs.
 -->
 <template id="todo-mod-template">
   <div class="todo-mod">
@@ -23,6 +23,16 @@
                  @keydown.escape.stop="store.cancelEdit()">
         </form>
         <div class="todo-mod-row" v-else>
+          <!-- Drag this to move the todo; with the keyboard focus on it, arrow up and down do the same. -->
+          <button class="todo-mod-icon-button todo-mod-handle" type="button" title="Drag to reorder"
+                  :aria-label="'Reorder: ' + todo.text" :disabled="store.todos.length < 2"
+                  @pointerdown="startDrag($event, todo.id)" @keydown="moveWithKeys($event, todo.id)">
+            <svg viewBox="0 0 16 16" width="14" height="14" fill="currentColor" aria-hidden="true">
+              <circle cx="5.5" cy="3" r="1.4"/><circle cx="10.5" cy="3" r="1.4"/>
+              <circle cx="5.5" cy="8" r="1.4"/><circle cx="10.5" cy="8" r="1.4"/>
+              <circle cx="5.5" cy="13" r="1.4"/><circle cx="10.5" cy="13" r="1.4"/>
+            </svg>
+          </button>
           <label class="todo-mod-check">
             <!-- If the change cannot be saved, put the checkbox back to what the list says. -->
             <input type="checkbox" :checked="todo.done"

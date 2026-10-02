@@ -2,8 +2,15 @@
 // top bar, and with a hotkey.
 
 export async function setup(ctx) {
-  const [{ createStore }, { createModal }, { placeButton }, { addHotkeySetting, listenForHotkey }] = await Promise.all([
+  const [
+    { createStore },
+    { createSorter },
+    { createModal },
+    { placeButton },
+    { addHotkeySetting, listenForHotkey },
+  ] = await Promise.all([
     ctx.loadModule('src/store.mjs'),
+    ctx.loadModule('src/sort.mjs'),
     ctx.loadModule('src/modal.mjs'),
     ctx.loadModule('src/button.mjs'),
     ctx.loadModule('src/hotkey.mjs'),
@@ -18,7 +25,7 @@ export async function setup(ctx) {
     try {
       const store = createStore(ctx.characterStorage, ui.createStore);
       store.load();
-      modal = createModal(store);
+      modal = createModal(store, createSorter);
     } catch (error) {
       console.error('[Todo] Could not set up the todo list:', error);
       return;

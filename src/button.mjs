@@ -1,4 +1,4 @@
-// The button that opens the todo window: in the top bar next to the potion button, or in the
+// The button that opens the todo window: in the top bar in front of the potion button, or in the
 // sidebar if a game update has moved the top bar around.
 
 const POTION_BUTTON_ID = 'page-header-potions-dropdown';
@@ -17,16 +17,14 @@ export function placeButton({ iconUrl, onClick }) {
   return 'sidebar';
 }
 
-// Same wrapper, button and icon classes as the game's own top bar buttons, so it picks up their look.
+// The button is nothing but the icon: a 32px square that the picture fills (see assets/styles.css),
+// which is the size other mods use for a picture button in the top bar. `btn btn-sm` are the game's
+// button classes; with them the game lines the button up like the ones around it.
 function createHeaderButton(iconUrl, onClick) {
-  const wrapper = document.createElement('div');
-  wrapper.id = 'todo-mod-header';
-  wrapper.className = 'dropdown d-inline-block ml-2';
-
   const button = document.createElement('button');
   button.type = 'button';
   button.id = 'todo-mod-header-button';
-  button.className = 'btn btn-sm btn-dual todo-mod-header-button';
+  button.className = 'btn btn-sm todo-mod-header-button';
   button.title = 'Todo';
   button.setAttribute('aria-label', 'Todo');
   button.addEventListener('click', () => {
@@ -35,11 +33,11 @@ function createHeaderButton(iconUrl, onClick) {
   });
 
   const icon = document.createElement('img');
-  icon.className = 'skill-icon-xxs todo-mod-header-icon';
+  icon.className = 'todo-mod-header-icon';
   icon.src = iconUrl;
   icon.alt = '';
+  icon.draggable = false;
 
   button.append(icon);
-  wrapper.append(button);
-  return wrapper;
+  return button;
 }

@@ -29,9 +29,11 @@ function nudgeQueue() {
   if (queue && queue.length && typeof openNextModal === 'function') openNextModal();
 }
 
-export function createModal(store) {
+/** `createSorter` comes from src/sort.mjs and makes the list reorderable. */
+export function createModal(store, createSorter) {
   // The list is rendered once into this element; every popup that shows it reuses the element.
   const host = document.createElement('div');
+  const sorter = createSorter(host, store);
   let pendingStartup = null; // options of the startup window while it waits for its turn
 
   ui.create(
@@ -39,6 +41,8 @@ export function createModal(store) {
       $template: TEMPLATE,
       store,
       close,
+      startDrag: sorter.startDrag,
+      moveWithKeys: sorter.moveWithKeys,
       scrollListToEnd() {
         // Wait for the new row to be rendered before scrolling to it.
         requestAnimationFrame(() => {
@@ -79,6 +83,8 @@ export function createModal(store) {
       // Keep the keyboard focus on the popup itself rather than on a button or the text field,
       // so that the hotkey can close the window again and Escape keeps working.
       didOpen: (popup) => popup.focus(),
+      // The hotkey can close the window in the middle of a drag; the dragged todo then stays put.
+      willClose: sorter.cancel,
       didClose: nudgeQueue,
     };
     return options;

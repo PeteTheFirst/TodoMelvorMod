@@ -134,6 +134,17 @@ export function createStore(storage, makeReactive) {
       return this.save(this.todos.filter((todo) => !todo.done));
     },
 
+    /** Moves a todo to the given position in the list; the todos in between shift by one. */
+    move(id, toIndex) {
+      const from = this.todos.findIndex((todo) => todo.id === id);
+      if (from === -1) return false;
+      const to = Math.max(0, Math.min(this.todos.length - 1, toIndex));
+      if (to === from) return true;
+      const next = [...this.todos];
+      next.splice(to, 0, next.splice(from, 1)[0]);
+      return this.save(next);
+    },
+
     startEdit(id) {
       const todo = this.todos.find((candidate) => candidate.id === id);
       if (!todo) return;

@@ -8,6 +8,8 @@ A todo list for Melvor Idle. Every character has its own list.
   hotkey, **T** by default; change or disable it under *Mod Settings → Todo*.
 - In the window you can add todos, check them off, edit their text (pencil), delete them (cross) and
   remove all completed ones at once.
+- To change the order, drag a todo by the handle (six dots) on its left. With the keyboard: move the
+  focus to the handle with Tab, then press arrow up or arrow down. Escape cancels a drag.
 - **Don't show again today** keeps the window from opening on its own until the next day. Open the
   list by hand to undo that.
 
@@ -25,6 +27,7 @@ nearly full and refuses new todos once it is full.
 | `setup.mjs` | Entry point: loads the modules and wires them together once the character is ready. |
 | `src/store.mjs` | The list itself: saved format, validation, storage limit. |
 | `src/modal.mjs` | The window, and when it opens on startup. |
+| `src/sort.mjs` | Reordering the list by dragging or with the arrow keys. |
 | `src/button.mjs` | Top bar button, with a sidebar entry as fallback. |
 | `src/hotkey.mjs` | Hotkey setting and key handling. |
 | `assets/templates.html` | Markup of the window (PetiteVue template). |
@@ -32,7 +35,8 @@ nearly full and refuses new todos once it is full.
 | `assets/icon.png` | Mod icon, also used for the top bar button. |
 
 Saved data (the mod's character storage): `todos` is a list of `[done, text]` pairs with `done` as
-0 or 1, and `snoozedOn` is the day "Don't show again today" was clicked, as `YYYY-MM-DD`.
+0 or 1, in the order shown in the window, and `snoozedOn` is the day "Don't show again today" was
+clicked, as `YYYY-MM-DD`.
 
 ## Developing on Steam
 
