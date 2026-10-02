@@ -29,8 +29,11 @@ function nudgeQueue() {
   if (queue && queue.length && typeof openNextModal === 'function') openNextModal();
 }
 
-/** `createSorter` comes from src/sort.mjs and makes the list reorderable. */
-export function createModal(store, createSorter) {
+/**
+ * `createSorter` comes from src/sort.mjs and makes the list reorderable. `showsOnStartup` tells
+ * whether the "Show on startup" setting is on; it is asked each time, as the setting can change.
+ */
+export function createModal(store, createSorter, showsOnStartup) {
   // The list is rendered once into this element; every popup that shows it reuses the element.
   const host = document.createElement('div');
   const sorter = createSorter(host, store);
@@ -78,7 +81,7 @@ export function createModal(store, createSorter) {
       customClass: typeof createSwalCustomClass === 'function' ? createSwalCustomClass(classes) : classes,
       willOpen: () => {
         if (pendingStartup === options) pendingStartup = null;
-        store.prepare(mode);
+        store.prepare(mode, showsOnStartup());
       },
       // Keep the keyboard focus on the popup itself rather than on a button or the text field,
       // so that the hotkey can close the window again and Escape keeps working.
@@ -112,11 +115,11 @@ export function createModal(store, createSorter) {
 
   /**
    * Shows the window after the game has loaded, if there is something left to do and it has not
-   * been switched off for today. It queues up behind the "Welcome back" popup and anything else
-   * the game wants to show first.
+   * been switched off, in the settings or for today. It queues up behind the "Welcome back" popup
+   * and anything else the game wants to show first.
    */
   function openOnStartup() {
-    if (store.openCount() === 0 || store.isSnoozed()) return;
+    if (!showsOnStartup() || store.openCount() === 0 || store.isSnoozed()) return;
 
     const options = optionsFor('startup');
     pendingStartup = options;

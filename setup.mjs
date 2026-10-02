@@ -7,15 +7,19 @@ export async function setup(ctx) {
     { createSorter },
     { createModal },
     { placeButton },
+    { addStartupSetting, showsOnStartup },
     { addHotkeySetting, listenForHotkey },
   ] = await Promise.all([
     ctx.loadModule('src/store.mjs'),
     ctx.loadModule('src/sort.mjs'),
     ctx.loadModule('src/modal.mjs'),
     ctx.loadModule('src/button.mjs'),
+    ctx.loadModule('src/startup.mjs'),
     ctx.loadModule('src/hotkey.mjs'),
   ]);
 
+  // The settings appear in the mod's settings window in this order.
+  addStartupSetting(ctx.settings);
   addHotkeySetting(ctx.settings);
 
   // The game calls this once the character is loaded and offline progress has been worked out.
@@ -25,7 +29,7 @@ export async function setup(ctx) {
     try {
       const store = createStore(ctx.characterStorage, ui.createStore);
       store.load();
-      modal = createModal(store, createSorter);
+      modal = createModal(store, createSorter, () => showsOnStartup(ctx.settings));
     } catch (error) {
       console.error('[Todo] Could not set up the todo list:', error);
       return;

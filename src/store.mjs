@@ -67,6 +67,7 @@ export function createStore(storage, makeReactive) {
     todos: [], // { id, text, done }; id only exists at runtime
     snoozedOn: '', // the day the startup window was switched off for, as YYYY-MM-DD
     mode: 'manual', // 'startup' while the window is showing because the game was just loaded
+    startupEnabled: true, // the "Show on startup" setting, as it was when the window last opened
     newText: '',
     editingId: null,
     editText: '',
@@ -87,8 +88,9 @@ export function createStore(storage, makeReactive) {
     },
 
     /** Called each time the window opens: sets why it opened and clears leftovers from last time. */
-    prepare(mode) {
+    prepare(mode, startupEnabled = true) {
       this.mode = mode;
+      this.startupEnabled = startupEnabled;
       this.error = '';
       this.cancelEdit();
     },

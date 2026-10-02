@@ -75,7 +75,8 @@
       <button class="btn btn-secondary" type="button" v-if="store.mode === 'startup'" @click="store.snooze() && close()">
         Don't show again today
       </button>
-      <p class="todo-mod-note" v-else-if="store.isSnoozed()">
+      <!-- Only worth saying while the startup window is on at all, see src/startup.mjs. -->
+      <p class="todo-mod-note" v-else-if="store.startupEnabled && store.isSnoozed()">
         The startup window is switched off for today.
         <button class="todo-mod-link" type="button" @click="store.unsnooze()">Show it again</button>
       </p>
